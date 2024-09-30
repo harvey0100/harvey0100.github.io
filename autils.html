@@ -62,7 +62,7 @@ layout: null
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in site.data.modules %}
+                        {% for item in site.data.autils.modules %}
                         <tr>
                             <td>{{ item.name }}</td>
                             <td>{{ item.description }}</td>
@@ -72,13 +72,16 @@ layout: null
                                 {% endfor %}
                             </td>
                             <td>
-                                <a href="mailto:{{ item.maintainer_email }}">
-                                    <img src="{{ item.maintainer_image }}" alt="">{{ item.maintainer }}
-                                </a>
+                                {% for maintainer in item.maintainers %}
+                                    <a href="mailto:{{ maintainer.email }}">
+                                        <img src="{{ maintainer.maintainer_image }}" alt="{{ maintainer.name }}">
+                                        {{ maintainer.name }}
+                                    </a><br>
+                                {% endfor %}
                             </td>
                             <td>
-                                {% for os in item.os %}
-                                    <p class="os {{ os }}">{{ os }}</p>
+                                {% for platform in item.supported_platforms %}
+                                    <p class="os {{ platform }}">{{ platform }}</p>
                                 {% endfor %}
                             </td>
                             <td>
@@ -86,8 +89,8 @@ layout: null
                                     <strong>{{ test }}</strong><br>
                                 {% endfor %}
                             </td>
-                            <td>{{ item.status }}</td>
-                        </tr>
+                            <td>{{ item.remote | default: 'false' }}</td>
+                        </tr>                        
                         {% endfor %}
                     </tbody>
                 </table>
